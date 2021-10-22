@@ -14,7 +14,9 @@ package aleo
 
 import (
 	"context"
+	"errors"
 	"math/big"
+	"time"
 
 	"github.com/ChainSafe/chainbridge-utils/msg"
 	"github.com/ChainSafe/log15"
@@ -85,6 +87,96 @@ func (c *Connection) Arc721DepositRecord(destId msg.ChainId, nonce msg.Nonce) (A
 	}
 	err := c.client.CallContext(context.Background(), &record, "deposit_record", arg)
 	return record, err
+}
+
+// ProposalEvents queries the Aleo Custodian for the proposal events at the latest block
+func (c *Connection) ProposalEvents(latestBlock *big.Int) ([]ProposalRecord, error) {
+	var results []ProposalRecord
+	arg := map[string]interface{}{
+		"latest_block": latestBlock,
+	}
+	err := c.client.CallContext(context.Background(), &results, "proposal_events", arg)
+	return results, err
+}
+
+// GetProposal queries the custodian for the status of a proposal
+func (c *Connection) GetProposal(srcId msg.ChainId, nonce msg.Nonce, dataHash [32]byte) (ProposalRecord, error) {
+	var prop ProposalRecord
+	arg := map[string]interface{}{
+		"source_chain_id": uint8(srcId),
+		"nonce": uint64(nonce),
+		"data_hash": dataHash,
+	}
+	err := c.client.CallContext(context.Background(), &prop, "get_proposal_record", arg)
+	return prop, err
+}
+
+// HasVotedOnProposal queries the custodian to check if this relayer has voted on proposal
+func (c *Connection) HasVotedOnProposal(srcId msg.ChainId, nonce msg.Nonce, dataHash [32]byte, from [20]byte) (bool, error){
+	var hasVoted bool
+	arg := map[string]interface{}{
+		"source_chain_id": uint8(srcId),
+		"nonce": uint64(nonce),
+		"data_hash": dataHash,
+		"from": from,
+	}
+	err := c.client.CallContext(context.Background(), &hasVoted, "get_has_voted_on_proposal", arg)
+	return hasVoted, err
+}
+
+// VoteProposal vote a proposal on the custodian
+func (c *Connection) VoteProposal(srcId msg.ChainId, depositNonce msg.Nonce, resourceId [32]byte, dataHash [32]byte) (string, error){
+	var propId string
+	arg := map[string]interface{}{
+		"source_chain_id": uint8(srcId),
+		"nonce": uint64(depositNonce),
+		"resource_id": resourceId,
+		"data_hash": dataHash,
+	}
+
+	err := c.client.CallContext(context.Background(), &propId, "vote_proposal", arg)
+	return propId, err
+}
+
+// ExecuteProposal execute a proposal on the custodian
+func (c *Connection) ExecuteProposal(srcId msg.ChainId, depositNonce msg.Nonce, data []byte, resourceId [32]byte) (string, error) {
+
+	var propId string
+	arg := map[string]interface{}{
+		"source_chain_id": uint8(srcId),
+		"nonce": uint64(depositNonce),
+		"resource_id": resourceId,
+		"data": data,
+	}
+
+	err := c.client.CallContext(context.Background(), &propId, "execute_proposal", arg)
+	return propId, err
+}
+
+func (c *Connection) WaitForBlock(targetBlock *big.Int, delay *big.Int) error {
+	for {
+		select {
+		case <-c.stop:
+			return errors.New("connection terminated")
+		default:
+			currBlock, err := c.LatestBlock()
+			if err != nil {
+				return err
+			}
+
+			if delay != nil {
+				currBlock.Sub(currBlock, delay)
+			}
+
+			// Equal or greater than target
+			if currBlock.Cmp(targetBlock) >= 0 {
+				return nil
+			}
+			c.log.Trace("Block not ready, waiting", "target", targetBlock, "current", currBlock, "delay", delay)
+			time.Sleep(CustodianRetryInterval)
+			continue
+		}
+	}
 }
 
 // Close terminates the client connection and stops any running routines

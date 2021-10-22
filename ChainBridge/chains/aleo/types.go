@@ -34,6 +34,13 @@ type ARC721DepositRecord struct {
 	TokenURI                    string `json:"token_uri"`
 }
 
+type ProposalRecord struct {
+	SourceChainID uint8 `json:"source_chain_id"`
+	Nonce uint64 `json:"nonce"`
+	Status uint8 `json:"status"`
+
+}
+
 // HexStringFormat Removes leading 0x from a hex string
 func HexStringFormat(hexString string) string {
 	re := regexp.MustCompile(`(?i)0x`)
