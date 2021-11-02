@@ -69,8 +69,7 @@ func (w *writer) proposalIsPassed(srcId msg.ChainId, nonce msg.Nonce, dataHash [
 
 // hasVoted checks if this relayer has already voted
 func (w *writer) hasVoted(srcId msg.ChainId, nonce msg.Nonce, dataHash [32]byte) bool {
-	// TODO: Make some equivalent to the From address instead of the empty address
-	hasVoted, err := w.conn.HasVotedOnProposal(srcId, nonce, dataHash, [20]byte{})
+	hasVoted, err := w.conn.HasVotedOnProposal(srcId, nonce, dataHash)
 	if err != nil {
 		w.log.Error("Failed to check proposal existence", "err", err)
 		return false

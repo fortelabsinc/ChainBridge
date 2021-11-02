@@ -29,13 +29,15 @@ type Connection struct {
 	log      log15.Logger
 	client   *rpc.Client
 	stop     chan int
+	relayerId string
 }
 
 // NewConnection returns an uninitialized connection, must call Connection.Connect() before using.
-func NewConnection(endpoint string, http bool, log log15.Logger) *Connection {
+func NewConnection(endpoint string, http bool, relayerId string, log log15.Logger) *Connection {
 	return &Connection{
 		endpoint: endpoint,
 		http:     http,
+		relayerId: relayerId,
 		log:      log,
 		stop:     make(chan int),
 	}
@@ -112,13 +114,15 @@ func (c *Connection) GetProposal(srcId msg.ChainId, nonce msg.Nonce, dataHash [3
 }
 
 // HasVotedOnProposal queries the custodian to check if this relayer has voted on proposal
-func (c *Connection) HasVotedOnProposal(srcId msg.ChainId, nonce msg.Nonce, dataHash [32]byte, from [20]byte) (bool, error){
+func (c *Connection) HasVotedOnProposal(srcId msg.ChainId, nonce msg.Nonce, dataHash [32]byte) (bool, error){
 	var hasVoted bool
 	arg := map[string]interface{}{
+		"relayer_id": c.relayerId,
 		"source_chain_id": uint8(srcId),
 		"nonce": uint64(nonce),
 		"data_hash": dataHash,
-		"from": from,
+		// Add back from address when we aren't using a relayer id
+		//"from": from,
 	}
 	err := c.client.CallContext(context.Background(), &hasVoted, "get_has_voted_on_proposal", arg)
 	return hasVoted, err
@@ -128,6 +132,7 @@ func (c *Connection) HasVotedOnProposal(srcId msg.ChainId, nonce msg.Nonce, data
 func (c *Connection) VoteProposal(srcId msg.ChainId, depositNonce msg.Nonce, resourceId [32]byte, dataHash [32]byte) (string, error){
 	var propId string
 	arg := map[string]interface{}{
+		"relayer_id": c.relayerId,
 		"source_chain_id": uint8(srcId),
 		"nonce": uint64(depositNonce),
 		"resource_id": resourceId,
@@ -143,6 +148,7 @@ func (c *Connection) ExecuteProposal(srcId msg.ChainId, depositNonce msg.Nonce, 
 
 	var propId string
 	arg := map[string]interface{}{
+		"relayer_id": c.relayerId,
 		"source_chain_id": uint8(srcId),
 		"nonce": uint64(depositNonce),
 		"resource_id": resourceId,
