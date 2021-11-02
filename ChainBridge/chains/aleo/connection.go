@@ -139,13 +139,14 @@ func (c *Connection) VoteProposal(srcId msg.ChainId, depositNonce msg.Nonce, res
 }
 
 // ExecuteProposal execute a proposal on the custodian
-func (c *Connection) ExecuteProposal(srcId msg.ChainId, depositNonce msg.Nonce, data []byte, resourceId [32]byte) (string, error) {
+func (c *Connection) ExecuteProposal(srcId msg.ChainId, depositNonce msg.Nonce, data []byte, dataHash [32]byte, resourceId [32]byte) (string, error) {
 
 	var propId string
 	arg := map[string]interface{}{
 		"source_chain_id": uint8(srcId),
 		"nonce": uint64(depositNonce),
 		"resource_id": resourceId,
+		"data_hash": dataHash,
 		"data": data,
 	}
 

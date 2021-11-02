@@ -13,11 +13,11 @@
 package aleo
 
 import (
+	"errors"
 	utils "github.com/ChainSafe/ChainBridge/shared/ethereum"
 	"github.com/ChainSafe/chainbridge-utils/msg"
 	"math/big"
 	"time"
-	"errors"
 )
 
 // ExecuteBlockWatchLimit Number of blocks to wait for an finalization event
@@ -102,7 +102,11 @@ func (w *writer) createArc721Proposal(m msg.Message) bool {
 	w.log.Info("Creating arc721 proposal", "src", m.Source, "nonce", m.DepositNonce)
 
 	// Construct Arc-721 Data
-	data := ConstructArc721ProposalData(m.Payload[0].([]byte), m.Payload[1].([]byte), m.Payload[2].([]byte))
+	tokenId := m.Payload[0].([]byte)
+	recipient := m.Payload[1].([]byte)
+	metadata := m.Payload[2].([]byte)
+
+	data := ConstructArc721ProposalData(tokenId, recipient, metadata)
 	dataHash := utils.Hash(data)
 
 	if !w.shouldVote(m, dataHash) {
@@ -227,7 +231,8 @@ func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) 
 		default:
 
 			// Call to execute proposal on the aleo chain
-			propId, err := w.conn.ExecuteProposal(m.Source, m.DepositNonce, data, m.ResourceId)
+
+			propId, err := w.conn.ExecuteProposal(m.Source, m.DepositNonce, data, dataHash, m.ResourceId)
 
 			if err == nil {
 				w.log.Info("Submitted proposal execution", "propId", propId, "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
