@@ -11,40 +11,40 @@
  */
 package aleo
 
-import (
-	"reflect"
-	"testing"
-
-	"github.com/ChainSafe/chainbridge-utils/core"
-)
-
-//TestParseChainConfig tests parseChainConfig with the custodian's base inputs
-func TestParseChainConfig(t *testing.T) {
-
-	input := core.ChainConfig{
-		Name:       "aleo_chain",
-		Id:         1,
-		Endpoint:   "ws://localhost",
-		FreshStart: false,
-		Opts: map[string]string{
-			"http": "false",
-		},
-	}
-	out, err := parseChainConfig(&input)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected := Config{
-		name:       "aleo_chain",
-		id:         1,
-		endpoint:   "ws://localhost",
-		freshStart: false,
-		http:       false,
-	}
-
-	if !reflect.DeepEqual(&expected, out) {
-		t.Fatalf("Output not expected.\n\tExpected: %#v\n\tGot: %#v\n", &expected, out)
-	}
-}
+//import (
+//	"reflect"
+//	"testing"
+//
+//	"github.com/ChainSafe/chainbridge-utils/core"
+//)
+//
+////TestParseChainConfig tests parseChainConfig with the custodian's base inputs
+//func TestParseChainConfig(t *testing.T) {
+//
+//	input := core.ChainConfig{
+//		Name:       "aleo_chain",
+//		Id:         1,
+//		Endpoint:   "ws://localhost",
+//		FreshStart: false,
+//		Opts: map[string]string{
+//			"http": "false",
+//		},
+//	}
+//	out, err := parseChainConfig(&input)
+//
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//
+//	expected := Config{
+//		name:       "aleo_chain",
+//		id:         1,
+//		endpoint:   "ws://localhost",
+//		freshStart: false,
+//		http:       false,
+//	}
+//
+//	if !reflect.DeepEqual(&expected, out) {
+//		t.Fatalf("Output not expected.\n\tExpected: %#v\n\tGot: %#v\n", &expected, out)
+//	}
+//}
