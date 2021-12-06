@@ -30,7 +30,7 @@ var (
 
 // IDepositExecuteMetaData contains all meta data concerning the IDepositExecute contract.
 var IDepositExecuteMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"destinationChainID\",\"type\":\"uint8\"},{\"internalType\":\"uint64\",\"name\":\"depositNonce\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"depositer\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeProposal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"depositer\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"deposit\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeProposal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IDepositExecuteABI is the input ABI used to generate the binding from.
@@ -179,25 +179,25 @@ func (_IDepositExecute *IDepositExecuteTransactorRaw) Transact(opts *bind.Transa
 	return _IDepositExecute.Contract.contract.Transact(opts, method, params...)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0x38995da9.
+// Deposit is a paid mutator transaction binding the contract method 0xb07e54bb.
 //
-// Solidity: function deposit(bytes32 resourceID, uint8 destinationChainID, uint64 depositNonce, address depositer, bytes data) returns()
-func (_IDepositExecute *IDepositExecuteTransactor) Deposit(opts *bind.TransactOpts, resourceID [32]byte, destinationChainID uint8, depositNonce uint64, depositer common.Address, data []byte) (*types.Transaction, error) {
-	return _IDepositExecute.contract.Transact(opts, "deposit", resourceID, destinationChainID, depositNonce, depositer, data)
+// Solidity: function deposit(bytes32 resourceID, address depositer, bytes data) returns(bytes)
+func (_IDepositExecute *IDepositExecuteTransactor) Deposit(opts *bind.TransactOpts, resourceID [32]byte, depositer common.Address, data []byte) (*types.Transaction, error) {
+	return _IDepositExecute.contract.Transact(opts, "deposit", resourceID, depositer, data)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0x38995da9.
+// Deposit is a paid mutator transaction binding the contract method 0xb07e54bb.
 //
-// Solidity: function deposit(bytes32 resourceID, uint8 destinationChainID, uint64 depositNonce, address depositer, bytes data) returns()
-func (_IDepositExecute *IDepositExecuteSession) Deposit(resourceID [32]byte, destinationChainID uint8, depositNonce uint64, depositer common.Address, data []byte) (*types.Transaction, error) {
-	return _IDepositExecute.Contract.Deposit(&_IDepositExecute.TransactOpts, resourceID, destinationChainID, depositNonce, depositer, data)
+// Solidity: function deposit(bytes32 resourceID, address depositer, bytes data) returns(bytes)
+func (_IDepositExecute *IDepositExecuteSession) Deposit(resourceID [32]byte, depositer common.Address, data []byte) (*types.Transaction, error) {
+	return _IDepositExecute.Contract.Deposit(&_IDepositExecute.TransactOpts, resourceID, depositer, data)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0x38995da9.
+// Deposit is a paid mutator transaction binding the contract method 0xb07e54bb.
 //
-// Solidity: function deposit(bytes32 resourceID, uint8 destinationChainID, uint64 depositNonce, address depositer, bytes data) returns()
-func (_IDepositExecute *IDepositExecuteTransactorSession) Deposit(resourceID [32]byte, destinationChainID uint8, depositNonce uint64, depositer common.Address, data []byte) (*types.Transaction, error) {
-	return _IDepositExecute.Contract.Deposit(&_IDepositExecute.TransactOpts, resourceID, destinationChainID, depositNonce, depositer, data)
+// Solidity: function deposit(bytes32 resourceID, address depositer, bytes data) returns(bytes)
+func (_IDepositExecute *IDepositExecuteTransactorSession) Deposit(resourceID [32]byte, depositer common.Address, data []byte) (*types.Transaction, error) {
+	return _IDepositExecute.Contract.Deposit(&_IDepositExecute.TransactOpts, resourceID, depositer, data)
 }
 
 // ExecuteProposal is a paid mutator transaction binding the contract method 0xe248cff2.

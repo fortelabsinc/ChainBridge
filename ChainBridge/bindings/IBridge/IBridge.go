@@ -30,7 +30,7 @@ var (
 
 // IBridgeMetaData contains all meta data concerning the IBridge contract.
 var IBridgeMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"_chainID\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"name\":\"_domainID\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IBridgeABI is the input ABI used to generate the binding from.
@@ -179,23 +179,23 @@ func (_IBridge *IBridgeTransactorRaw) Transact(opts *bind.TransactOpts, method s
 	return _IBridge.Contract.contract.Transact(opts, method, params...)
 }
 
-// ChainID is a paid mutator transaction binding the contract method 0xbeab7131.
+// DomainID is a paid mutator transaction binding the contract method 0x9dd694f4.
 //
-// Solidity: function _chainID() returns(uint8)
-func (_IBridge *IBridgeTransactor) ChainID(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IBridge.contract.Transact(opts, "_chainID")
+// Solidity: function _domainID() returns(uint8)
+func (_IBridge *IBridgeTransactor) DomainID(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _IBridge.contract.Transact(opts, "_domainID")
 }
 
-// ChainID is a paid mutator transaction binding the contract method 0xbeab7131.
+// DomainID is a paid mutator transaction binding the contract method 0x9dd694f4.
 //
-// Solidity: function _chainID() returns(uint8)
-func (_IBridge *IBridgeSession) ChainID() (*types.Transaction, error) {
-	return _IBridge.Contract.ChainID(&_IBridge.TransactOpts)
+// Solidity: function _domainID() returns(uint8)
+func (_IBridge *IBridgeSession) DomainID() (*types.Transaction, error) {
+	return _IBridge.Contract.DomainID(&_IBridge.TransactOpts)
 }
 
-// ChainID is a paid mutator transaction binding the contract method 0xbeab7131.
+// DomainID is a paid mutator transaction binding the contract method 0x9dd694f4.
 //
-// Solidity: function _chainID() returns(uint8)
-func (_IBridge *IBridgeTransactorSession) ChainID() (*types.Transaction, error) {
-	return _IBridge.Contract.ChainID(&_IBridge.TransactOpts)
+// Solidity: function _domainID() returns(uint8)
+func (_IBridge *IBridgeTransactorSession) DomainID() (*types.Transaction, error) {
+	return _IBridge.Contract.DomainID(&_IBridge.TransactOpts)
 }
