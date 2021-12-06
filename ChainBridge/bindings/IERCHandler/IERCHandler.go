@@ -30,7 +30,7 @@ var (
 
 // IERCHandlerMetaData contains all meta data concerning the IERCHandler contract.
 var IERCHandlerMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setResource\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setBurnable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setLockMintUnlockable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setResource\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setBurnable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setLockMintUnlockable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountOrTokenID\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IERCHandlerABI is the input ABI used to generate the binding from.
@@ -242,23 +242,23 @@ func (_IERCHandler *IERCHandlerTransactorSession) SetResource(resourceID [32]byt
 	return _IERCHandler.Contract.SetResource(&_IERCHandler.TransactOpts, resourceID, contractAddress)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x0968f264.
+// Withdraw is a paid mutator transaction binding the contract method 0xd9caed12.
 //
-// Solidity: function withdraw(bytes data) returns()
-func (_IERCHandler *IERCHandlerTransactor) Withdraw(opts *bind.TransactOpts, data []byte) (*types.Transaction, error) {
-	return _IERCHandler.contract.Transact(opts, "withdraw", data)
+// Solidity: function withdraw(address tokenAddress, address recipient, uint256 amountOrTokenID) returns()
+func (_IERCHandler *IERCHandlerTransactor) Withdraw(opts *bind.TransactOpts, tokenAddress common.Address, recipient common.Address, amountOrTokenID *big.Int) (*types.Transaction, error) {
+	return _IERCHandler.contract.Transact(opts, "withdraw", tokenAddress, recipient, amountOrTokenID)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x0968f264.
+// Withdraw is a paid mutator transaction binding the contract method 0xd9caed12.
 //
-// Solidity: function withdraw(bytes data) returns()
-func (_IERCHandler *IERCHandlerSession) Withdraw(data []byte) (*types.Transaction, error) {
-	return _IERCHandler.Contract.Withdraw(&_IERCHandler.TransactOpts, data)
+// Solidity: function withdraw(address tokenAddress, address recipient, uint256 amountOrTokenID) returns()
+func (_IERCHandler *IERCHandlerSession) Withdraw(tokenAddress common.Address, recipient common.Address, amountOrTokenID *big.Int) (*types.Transaction, error) {
+	return _IERCHandler.Contract.Withdraw(&_IERCHandler.TransactOpts, tokenAddress, recipient, amountOrTokenID)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x0968f264.
+// Withdraw is a paid mutator transaction binding the contract method 0xd9caed12.
 //
-// Solidity: function withdraw(bytes data) returns()
-func (_IERCHandler *IERCHandlerTransactorSession) Withdraw(data []byte) (*types.Transaction, error) {
-	return _IERCHandler.Contract.Withdraw(&_IERCHandler.TransactOpts, data)
+// Solidity: function withdraw(address tokenAddress, address recipient, uint256 amountOrTokenID) returns()
+func (_IERCHandler *IERCHandlerTransactorSession) Withdraw(tokenAddress common.Address, recipient common.Address, amountOrTokenID *big.Int) (*types.Transaction, error) {
+	return _IERCHandler.Contract.Withdraw(&_IERCHandler.TransactOpts, tokenAddress, recipient, amountOrTokenID)
 }
