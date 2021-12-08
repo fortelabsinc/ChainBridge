@@ -103,16 +103,26 @@ func GetConfig(ctx *cli.Context) (*Config, error) {
 	if file := ctx.String(ConfigFileFlag.Name); file != "" {
 		path = file
 	}
-	err := loadConfig(path, &fig)
-	if err != nil {
-		log.Warn("err loading json file", "err", err.Error())
-		return &fig, err
+	_, configFromEnv := os.LookupEnv(EnvironmentConfigFlag)
+	if configFromEnv {
+		err := loadEnvConfig(&fig)
+		if err != nil {
+			log.Warn("err loading json file", "err", err.Error())
+			return &fig, err
+		}
+	} else {
+		err := loadConfig(path, &fig)
+		if err != nil {
+			log.Warn("err loading json file", "err", err.Error())
+			return &fig, err
+		}
 	}
+
 	if ksPath := ctx.String(KeystorePathFlag.Name); ksPath != "" {
 		fig.KeystorePath = ksPath
 	}
 	log.Debug("Loaded config", "path", path)
-	err = fig.validate()
+	err := fig.validate()
 	if err != nil {
 		return nil, err
 	}
@@ -247,13 +257,13 @@ func loadEnvConfig(config *Config) error {
 
 	scopes := getEnv("SCOPES", "")
 
-	threashold := getEnvAsInt("THRESHOLD", 1)
-
-	randomKeystorePassword, err := GenerateRandomString(32)
-	if err != nil {
-		randomKeystorePassword = "spacebacon"
-	}
-	keystorePassword := getEnv("KEYSTORE_PASSWORD", randomKeystorePassword)
+	//threashold := getEnvAsInt("THRESHOLD", 1)
+	//
+	//randomKeystorePassword, err := GenerateRandomString(32)
+	//if err != nil {
+	//	randomKeystorePassword = "spacebacon"
+	//}
+	//keystorePassword := getEnv("KEYSTORE_PASSWORD", randomKeystorePassword)
 
 	// Default Aleo Chain Options
 	aleoChainName := getEnv("ALEO_CHAIN_NAME", "ALEO")
@@ -355,7 +365,10 @@ func loadEnvConfig(config *Config) error {
 		},
 	}
 
-	config.Chains = []RawChainConfig{ethChainConfig, aleoChainConfig}
+	log.Info("Aleo Chain Config", aleoChainConfig)
+	log.Info("ETH Chain Config", ethChainConfig)
+
+	config.Chains = []RawChainConfig{}
 
 	return nil
 }
