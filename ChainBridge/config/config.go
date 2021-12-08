@@ -103,7 +103,8 @@ func GetConfig(ctx *cli.Context) (*Config, error) {
 	if file := ctx.String(ConfigFileFlag.Name); file != "" {
 		path = file
 	}
-	_, configFromEnv := os.LookupEnv(EnvironmentConfigFlag)
+
+	configFromEnv := getEnvAsBool(EnvironmentConfigFlag, true)
 	if configFromEnv {
 		err := loadEnvConfig(&fig)
 		if err != nil {
