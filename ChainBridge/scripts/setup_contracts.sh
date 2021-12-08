@@ -4,6 +4,7 @@
 
 CONTRACTS_REPO="https://github.com/fortelabsinc/chainbridge-solidity"
 CONTRACTS_TAG="main"
+CONTRACTS_BRANCH="main"
 CONTRACTS_DIR="./solidity"
 DEST_DIR="./bindings"
 
