@@ -25,6 +25,7 @@ import (
 var (
 	HttpOpt       = "http"
 	StartBlockOpt = "startBlock"
+	RelayerIdOpt  = "relayerId"
 )
 
 // Config encapsulates all necessary parameters in aleo compatible custodians
@@ -39,6 +40,7 @@ type Config struct {
 	http               bool
 	startBlock         *big.Int
 	blockConfirmations *big.Int
+	relayerId		   string
 }
 
 // parseChainConfig uses a core.ChainConfig to construct the corresponding Config
@@ -54,6 +56,7 @@ func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 		http:               false,
 		startBlock:         big.NewInt(0),
 		blockConfirmations: big.NewInt(0),
+		relayerId:          "ab8f33ee-1f93-4cca-a104-a545ec6bec92",
 	}
 
 	if HTTP, ok := chainCfg.Opts[HttpOpt]; ok && HTTP == "true" {
@@ -73,6 +76,11 @@ func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 		} else {
 			return nil, fmt.Errorf("unable to parse %s", StartBlockOpt)
 		}
+	}
+
+	if relayerId, ok := chainCfg.Opts[RelayerIdOpt]; ok && relayerId != "" {
+		config.relayerId = relayerId
+		delete(chainCfg.Opts, RelayerIdOpt)
 	}
 
 	if len(chainCfg.Opts) != 0 {

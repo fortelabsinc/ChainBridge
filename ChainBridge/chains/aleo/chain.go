@@ -56,7 +56,7 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 	}
 
 	stop := make(chan int)
-	conn := NewConnection(cfg.endpoint, cfg.http, logger)
+	conn := NewConnection(cfg.endpoint, cfg.http, cfg.relayerId, logger)
 	err = conn.Connect()
 	if err != nil {
 		return nil, err
