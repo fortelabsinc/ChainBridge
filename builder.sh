@@ -47,7 +47,7 @@ if [ $a -eq 0 ]
     then
      ### Application DEPLOYMENT ###
      gcloud container clusters get-credentials $CLUSTER_NAME --project $PROJECT_ID  --region us-central1
-     ./ops --deploy --spec $SPECFILE
+     ./ops --capdeploy --spec $SPECFILE
      c=$?
 
      if [ $c -eq 1 ]
