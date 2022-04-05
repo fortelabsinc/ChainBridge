@@ -6,6 +6,7 @@ package ethereum
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -221,6 +222,13 @@ func (w *writer) watchThenExecute(m msg.Message, data []byte, dataHash [32]byte,
 
 			// execute the proposal once we find the matching finalized event
 			for _, evt := range evts {
+				w.log.Debug(fmt.Sprintf("Event %+v", evt))
+
+				if len(evt.Topics) < 4 {
+					w.log.Error(fmt.Sprintf("Invalid Topic length for event, please make sure all topics are indexed, got %d expected 4", len(evt.Topics)))
+					continue
+				}
+
 				sourceId := evt.Topics[1].Big().Uint64()
 				depositNonce := evt.Topics[2].Big().Uint64()
 				status := evt.Topics[3].Big().Uint64()
