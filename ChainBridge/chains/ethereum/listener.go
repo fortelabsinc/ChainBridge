@@ -164,18 +164,29 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 	// querying for logs
 	logs, err := l.conn.Client().FilterLogs(context.Background(), query)
 	if err != nil {
+		l.log.Debug("Unable to Filter Logs")
 		return fmt.Errorf("unable to Filter Logs: %w", err)
 	}
 
 	// read through the log events and handle their deposit event if handler is recognized
 	for _, log := range logs {
+		l.log.Debug(fmt.Sprintf("Log %+v", log))
+
+		if len(log.Topics) < 4 {
+			l.log.Error(fmt.Sprintf("Invalid Topic length for Log, please make sure all topics are indexed, got %d expected 4", len(log.Topics)))
+			continue
+		}
+
 		var m msg.Message
 		destId := msg.ChainId(log.Topics[1].Big().Uint64())
 		rId := msg.ResourceIdFromSlice(log.Topics[2].Bytes())
 		nonce := msg.Nonce(log.Topics[3].Big().Uint64())
 
+		l.log.Debug(fmt.Sprintf("resource ID %x", rId))
+
 		addr, err := l.bridgeContract.ResourceIDToHandlerAddress(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, rId)
 		if err != nil {
+			l.log.Debug("failed to get handler from resource ID %x", rId)
 			return fmt.Errorf("failed to get handler from resource ID %x", rId)
 		}
 
@@ -199,6 +210,8 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 			l.log.Error("subscription error: failed to route message", "err", err)
 		}
 	}
+
+	l.log.Debug("No Logs Found")
 
 	return nil
 }
