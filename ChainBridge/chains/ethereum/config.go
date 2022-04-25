@@ -26,6 +26,7 @@ var (
 	BridgeOpt             = "bridge"
 	Erc20HandlerOpt       = "erc20Handler"
 	Erc721HandlerOpt      = "erc721Handler"
+	Erc721Opt             = "erc721"
 	GenericHandlerOpt     = "genericHandler"
 	MaxGasPriceOpt        = "maxGasPrice"
 	MinGasPriceOpt        = "minGasPrice"
@@ -196,6 +197,10 @@ func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 		// Default to "fast"
 		config.egsSpeed = egs.Fast
 		delete(chainCfg.Opts, EGSSpeed)
+	}
+
+	if _, ok := chainCfg.Opts[Erc721Opt]; ok {
+		delete(chainCfg.Opts, Erc721Opt)
 	}
 
 	if len(chainCfg.Opts) != 0 {
