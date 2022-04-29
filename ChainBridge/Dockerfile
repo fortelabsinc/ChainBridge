@@ -11,7 +11,7 @@ RUN cd cmd/chainbridge && go build -o /bridge .
 FROM debian:stretch-slim AS app
 
 # Install Tooling
-RUN apt-get -y update && apt-get -y upgrade && apt-get install ca-certificates wget -y
+RUN apt-get -y update && apt-get -y upgrade && apt-get install ca-certificates wget curl -y
 
 # Install Substrate Chain Dependency, Not Supported for Forte Bridge
 #RUN wget -P /usr/local/bin/ https://chainbridge.ams3.digitaloceanspaces.com/subkey-rc6 \
